@@ -1,0 +1,22 @@
+# Virtual environment
+neuraze_env/
+venv/
+env/
+
+# Python
+_pycache_/
+*.py[cod]
+
+# Django
+db.sqlite3
+/static/
+media/
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
