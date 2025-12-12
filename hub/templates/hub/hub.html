@@ -1,19 +1,178 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h1>🌟 NeurAze Hub</h1>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;margin-top:18px;">
-    {% for r in rooms %}
-      {% if r.locked %}
-        <div style="padding:18px;border-radius:12px;background:#eee;opacity:.6;text-align:center;">
-          <div style="font-size:24px">🔒</div>
-          <div>{{ r.name }}</div>
-        </div>
-      {% else %}
-        <a href="{% url r.url %}" style="display:block;padding:18px;border-radius:12px;background:#fff;text-decoration:none;color:inherit;text-align:center;box-shadow:0 4px 10px rgba(0,0,0,.06)">
-          <div style="font-size:28px">🏷️</div>
-          <div>{{ r.name }}</div>
+
+<style>
+body {
+    background: linear-gradient(135deg, #EAF6FF, #EDEBFF);
+}
+
+.hub-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px;
+    font-family: 'Lexend', sans-serif;
+}
+
+.hub-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 28px;
+}
+
+/* GRID: 3 CARDS PER ROW */
+.hub-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    align-items: stretch; /* IMPORTANT */
+}
+
+/* CARD */
+.card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 22px;
+    min-height: 220px;        /* CONTROLLED height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* FIX */
+    box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+    transition: box-shadow .2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 16px 36px rgba(0,0,0,0.12);
+}
+
+/* CONTENT */
+.card h3 {
+    margin: 0 0 8px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.card p {
+    font-size: 14.5px;
+    color: #6b7280;
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+/* BUTTON */
+.enter-btn {
+    align-self: flex-start;
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 10px;
+    background: #eef2ff;
+    color: #4f46e5;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background .2s ease;
+}
+
+.enter-btn:hover {
+    background: #e0e7ff;
+}
+
+/* LEARNING INSIGHTS */
+.progress-ring {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: conic-gradient(
+        #4f46e5 0% 78%,
+        #e5e7eb 78% 100%
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.progress-inner {
+    width: 58px;
+    height: 58px;
+    background: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: #111827;
+    font-size: 14px;
+}
+
+.insight-list {
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.45;
+}
+</style>
+
+<div class="hub-container">
+
+    <div class="hub-title">NeurAze Hub</div>
+
+    <div class="hub-grid">
+
+        {% for r in rooms %}
+        <a href="{% url r.url %}" class="card-link">
+            <div class="card">
+
+                {% if r.name == "Whisper Hall" %}
+                    <h3>🗣️ Whisper Hall</h3>
+                    <p>A peaceful, distraction-free space designed for calm reading and quiet focus.</p>
+
+                {% elif r.name == "Mind Garden" %}
+                    <h3>🌱 Mind Garden</h3>
+                    <p>Nurture ideas, reflect deeply, and grow understanding at your own pace.</p>
+
+                {% elif r.name == "Library Gate" %}
+                    <h3>📚 Library Gate</h3>
+                    <p>Your gateway to structured knowledge, references, and curated learning paths.</p>
+
+                {% elif r.name == "Crystal Notes" %}
+                    <h3>💎 Crystal Notes</h3>
+                    <p>Clear, simplified notes crafted for better comprehension and easy recall.</p>
+
+                {% elif r.name == "Community" %}
+                    <h3>🤝 Community</h3>
+                    <p>A safe, supportive space to connect, share thoughts, and learn together.</p>
+
+                {% else %}
+                    <h3>📘 {{ r.name }}</h3>
+                    <p>Your personalized NeurAze learning space.</p>
+                {% endif %}
+
+                <button class="enter-btn">Enter →</button>
+
+            </div>
         </a>
-      {% endif %}
-    {% endfor %}
-  </div>
+        {% endfor %}
+
+        <!-- LEARNING INSIGHTS CARD -->
+        <div class="card">
+            <h3>📊 Learning Insights</h3>
+
+            <div class="progress-ring">
+                <div class="progress-inner">78%</div>
+            </div>
+
+            <p>Your overall learning comprehension based on how actively you use NeurAze features.</p>
+
+            
+        </div>
+
+    </div>
+
+</div>
+
 {% endblock %}

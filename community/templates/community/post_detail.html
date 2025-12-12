@@ -1,51 +1,236 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>{{ post.title }}</h1>
-<p style="font-size:17px; white-space:pre-line;">{{ post.content }}</p>
-<small>Posted by {{ post.author.username }} on {{ post.created }}</small>
+<style>
+/* FULL PAGE GRADIENT – EXACT HUB GRADIENT */
+.page-wrapper {
+    min-height: 100vh;
+    padding: 40px 0 60px 0;
+    background: linear-gradient(135deg, #EAF6FF, #EDEBFF);
+}
 
-<hr>
+/* MAIN CONTAINER */
+.post-container {
+    max-width: 900px;
+    margin: auto;
+    font-family: 'Lexend', sans-serif;
+}
 
-<!-- LIKE BUTTON -->
-<form method="POST" action="{% url 'community:toggle_like' post.id %}">
-    {% csrf_token %}
-    <button style="padding:10px 20px; border-radius:10px; background:#6C63FF; color:white;">
-        {% if liked %}❤️ Liked{% else %}🤍 Like{% endif %}
-    </button>
-</form>
+/* BACK BUTTON */
+.back-link {
+    display: inline-block;
+    margin-bottom: 18px;
+    padding: 8px 16px;
+    background: #eef2ff;
+    color: #4A3AFF;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 14px;
+}
 
-<p>{{ post.total_likes }} Likes</p>
+/* POST CARD */
+.post-card {
+    background: white;
+    padding: 30px;
+    border-radius: 22px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+    margin-bottom: 28px;
+}
 
-<hr>
+.post-card h1 {
+    font-size: 32px;
+    margin-bottom: 14px;
+    color: #111827;
+}
 
-<h3>Comments</h3>
+.post-content {
+    font-size: 16px;
+    color: #374151;
+    line-height: 1.7;
+    white-space: pre-line;
+    margin-bottom: 18px;
+}
 
-<!-- COMMENT LIST -->
-{% for c in comments %}
-<div style="
-    background:white;
-    padding:10px;
-    margin-bottom:10px;
-    border-radius:10px;
-">
-    <strong>{{ c.user.username }}</strong>  
-    <p>{{ c.comment }}</p>
-    <small>{{ c.created }}</small>
+.post-meta {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+/* LIKE SECTION */
+.like-section {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.like-btn {
+    padding: 10px 22px;
+    border-radius: 14px;
+    background: #6C63FF;
+    color: white;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: 'Lexend', sans-serif;
+}
+
+.like-btn:hover {
+    background: #5848ff;
+}
+
+.like-count {
+    font-size: 14px;
+    color: #374151;
+}
+
+/* COMMENTS SECTION */
+.comments-section {
+    background: white;
+    padding: 26px;
+    border-radius: 22px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+}
+
+.comments-section h3 {
+    font-size: 22px;
+    margin-bottom: 18px;
+    color: #111827;
+}
+
+.comment-card {
+    background: #f9fafb;
+    padding: 14px 16px;
+    border-radius: 14px;
+    margin-bottom: 14px;
+}
+
+.comment-card strong {
+    color: #4f46e5;
+}
+
+.comment-card p {
+    margin: 6px 0;
+    color: #374151;
+    font-size: 14.5px;
+}
+
+.comment-card small {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+/* ADD COMMENT */
+.comment-box {
+    margin-top: 22px;
+}
+
+.comment-textarea {
+    width: 100%;
+    height: 120px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 2px solid #c7d2fe;
+    font-family: 'Lexend', sans-serif;
+    font-size: 14px;
+    resize: none;
+    margin-bottom: 14px;
+}
+
+.comment-textarea:focus {
+    outline: none;
+    border-color: #6C63FF;
+}
+
+.comment-btn {
+    padding: 10px 24px;
+    background: #6C63FF;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.comment-btn:hover {
+    background: #5848ff;
+}
+</style>
+
+<div class="page-wrapper">
+
+    <div class="post-container">
+
+        <a href="{% url 'community:home' %}" class="back-link">
+            ⬅ Back to Community
+        </a>
+
+        <!-- POST CARD -->
+        <div class="post-card">
+
+            <h1>{{ post.title }}</h1>
+
+            <div class="post-content">
+                {{ post.content }}
+            </div>
+
+            <div class="post-meta">
+                Posted by <b>{{ post.author.username }}</b> on {{ post.created }}
+            </div>
+
+            <!-- LIKE -->
+            <div class="like-section">
+                <form method="POST" action="{% url 'community:toggle_like' post.id %}">
+                    {% csrf_token %}
+                    <button class="like-btn">
+                        {% if liked %}❤️ Liked{% else %}🤍 Like{% endif %}
+                    </button>
+                </form>
+
+                <div class="like-count">
+                    {{ post.total_likes }} Likes
+                </div>
+            </div>
+
+        </div>
+
+        <!-- COMMENTS -->
+        <div class="comments-section">
+
+            <h3>💬 Comments</h3>
+
+            {% for c in comments %}
+                <div class="comment-card">
+                    <strong>{{ c.user.username }}</strong>
+                    <p>{{ c.comment }}</p>
+                    <small>{{ c.created }}</small>
+                </div>
+            {% empty %}
+                <p style="color:#6b7280;">No comments yet. Start the conversation 🌱</p>
+            {% endfor %}
+
+            <!-- ADD COMMENT -->
+            <div class="comment-box">
+                <form method="POST" action="{% url 'community:add_comment' post.id %}">
+                    {% csrf_token %}
+
+                    <textarea
+                        name="comment"
+                        placeholder="Write a thoughtful comment..."
+                        class="comment-textarea"
+                        required
+                    ></textarea>
+
+                    <button type="submit" class="comment-btn">
+                        Comment
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
-{% empty %}
-<p>No comments yet.</p>
-{% endfor %}
-
-<!-- ADD COMMENT FORM -->
-<form method="POST" action="{% url 'community:add_comment' post.id %}">
-    {% csrf_token %}
-    <textarea name="comment" placeholder="Write a comment..."
-              style="width:100%; height:100px; padding:10px; border-radius:10px;"></textarea><br><br>
-
-    <button type="submit" style="padding:10px 20px; background:#6C63FF; color:white; border-radius:10px;">
-        Comment
-    </button>
-</form>
 
 {% endblock %}

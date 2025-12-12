@@ -4,62 +4,119 @@
 <!-- Load Lexend font for dyslexia-friendly output -->
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600&display=swap" rel="stylesheet">
 
-<h1 style="margin-bottom: 20px; font-family:Arial, sans-serif;">📖 Library Gate</h1>
+<style>
+/* FULL VIEWPORT GRADIENT – SAME AS HUB */
+.page-wrapper {
+    min-height: calc(100vh - 60px); /* accounts for header */
+    padding: 40px 0 60px 0;
+    background: linear-gradient(135deg, #EAF6FF, #EDEBFF);
+}
 
-<form method="post">
-    {% csrf_token %}
-    <textarea 
-        name="reading_text" 
-        rows="12" 
-        style="
-            width: 100%; 
-            font-family: Arial, sans-serif; 
-            font-size:18px; 
-            line-height:1.6; 
-            padding:12px; 
-            border:1px solid #ccc; 
-            border-radius:8px;
-            background: #fefefe;
-        "
-        placeholder="Paste your text here..."
-    >{{ reading_text }}</textarea>
-    <br><br>
+/* MAIN CONTAINER */
+.library-container {
+    max-width: 900px;
+    margin: auto;
+    font-family: 'Lexend', Arial, sans-serif;
+}
 
-    <button type="submit" name="read_on_screen" style="
-        padding:10px 20px; 
-        border-radius:6px; 
-        background:#6c63ff; 
-        color:white; 
-        border:none; 
-        margin-right: 10px;
-        cursor: pointer;
-        font-family: Arial, sans-serif;
-    ">Convert</button>
+/* TITLE */
+.library-container h1 {
+    margin-bottom: 20px;
+    font-size: 38px;
+    color: #111827;
+}
 
-    <button type="submit" name="download_pdf" style="
-        padding:10px 20px; 
-        border-radius:6px; 
-        background:#ff8c42; 
-        color:white; 
-        border:none;
-        cursor: pointer;
-        font-family: Arial, sans-serif;
-    ">Download PDF</button>
-</form>
+/* TEXTAREA */
+.library-textarea {
+    width: 100%;
+    font-size: 18px;
+    line-height: 1.6;
+    padding: 14px;
+    border: 2px solid #c7d2fe;
+    border-radius: 12px;
+    background: #ffffff;
+    font-family: Arial, sans-serif;
+}
 
-{% if reading_text %}
-<div style="
-    margin-top:24px; 
-    padding:18px; 
-    background:#f0f8ff; 
-    border-radius:12px; 
-    line-height:1.7; 
-    font-family:'Lexend', sans-serif; 
-    font-size:20px;
+/* BUTTONS */
+.btn-primary {
+    padding: 10px 22px;
+    border-radius: 10px;
+    background: #6c63ff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 15px;
+}
+
+.btn-secondary {
+    padding: 10px 22px;
+    border-radius: 10px;
+    background: #ff8c42;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.btn-primary:hover {
+    background: #5848ff;
+}
+
+.btn-secondary:hover {
+    background: #f07c2f;
+}
+
+/* OUTPUT BOX */
+.output-box {
+    margin-top: 24px;
+    padding: 18px;
+    background: #ffffff;
+    border-radius: 14px;
+    line-height: 1.7;
+    font-family: 'Lexend', sans-serif;
+    font-size: 20px;
     white-space: pre-wrap;
-">
-    {{ reading_text }}
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+</style>
+
+<div class="page-wrapper">
+
+    <div class="library-container">
+
+        <h1>📖 Library Gate</h1>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <textarea 
+                name="reading_text"
+                rows="12"
+                class="library-textarea"
+                placeholder="Paste your text here..."
+            >{{ reading_text }}</textarea>
+
+            <br><br>
+
+            <button type="submit" name="read_on_screen" class="btn-primary">
+                Convert
+            </button>
+
+            <button type="submit" name="download_pdf" class="btn-secondary">
+                Download PDF
+            </button>
+        </form>
+
+        {% if reading_text %}
+        <div class="output-box">
+            {{ reading_text }}
+        </div>
+        {% endif %}
+
+    </div>
+
 </div>
-{% endif %}
 
 {% endblock %}

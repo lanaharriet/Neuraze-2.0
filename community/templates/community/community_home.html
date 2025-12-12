@@ -1,20 +1,125 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Community</h1>
 
-{% for p in posts %}
-<div style="background:white; padding:15px; margin:10px 0; border-radius:12px;">
-    <h3><a href="{% url 'community:view_post' p.id %}">{{ p.title }}</a></h3>
-    <p>{{ p.content|truncatewords:20 }}</p>
-    <small>
-        ❤️ {{ p.total_likes }} Likes • 💬 {{ p.comments.count }} Comments
-    </small>
+<style>
+/* FORCE FULL VIEWPORT COVERAGE */
+.page-wrapper {
+    min-height: calc(100vh - 60px); /* subtract header height */
+    width: 100%;
+    padding: 40px 0 60px 0;
+    background: linear-gradient(135deg, #EAF6FF, #EDEBFF);
+}
+
+/* REMOVE MAIN'S VISUAL GAP EFFECT */
+.page-wrapper::before,
+.page-wrapper::after {
+    content: "";
+    display: table;
+}
+
+/* MAIN CONTAINER */
+.community-container {
+    max-width: 900px;
+    margin: auto;
+    font-family: 'Lexend', sans-serif;
+}
+
+/* HEADER */
+.community-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.community-header h1 {
+    font-size: 38px;
+    color: #111827;
+}
+
+/* CREATE BUTTON */
+.create-btn {
+    padding: 10px 22px;
+    border-radius: 14px;
+    background: #6C63FF;
+    color: white;
+    border: none;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.create-btn:hover {
+    background: #5848ff;
+}
+
+/* POST CARD */
+.post-card {
+    background: white;
+    padding: 22px 26px;
+    margin-bottom: 22px;
+    border-radius: 20px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+}
+
+.post-card h3 {
+    margin: 0 0 10px;
+    font-size: 22px;
+}
+
+.post-card h3 a {
+    text-decoration: none;
+    color: #4f46e5;
+    font-weight: 600;
+}
+
+.post-card p {
+    color: #4b5563;
+    font-size: 15.5px;
+    line-height: 1.6;
+}
+
+.post-meta {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #6b7280;
+}
+</style>
+
+<div class="page-wrapper">
+
+    <div class="community-container">
+
+        <div class="community-header">
+            <h1>🤝 Community</h1>
+
+            <a href="{% url 'community:create_post' %}">
+                <button class="create-btn">+ Create Post</button>
+            </a>
+        </div>
+
+        {% for p in posts %}
+            <div class="post-card">
+                <h3>
+                    <a href="{% url 'community:view_post' p.id %}">
+                        {{ p.title }}
+                    </a>
+                </h3>
+
+                <p>{{ p.content|truncatewords:20 }}</p>
+
+                <div class="post-meta">
+                    ❤️ {{ p.total_likes }} Likes &nbsp;•&nbsp;
+                    💬 {{ p.comments.count }} Comments
+                </div>
+            </div>
+        {% empty %}
+            <p style="color:#6b7280;">
+                No posts yet. Be the first to start a discussion ✨
+            </p>
+        {% endfor %}
+
+    </div>
+
 </div>
-{% empty %}
-<p>No posts yet.</p>
-{% endfor %}
 
-<a href="{% url 'community:create_post' %}">
-    <button style="padding:10px 20px; border-radius:10px; background:#6C63FF; color:white;">Create Post</button>
-</a>
 {% endblock %}
