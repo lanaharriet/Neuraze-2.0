@@ -27,14 +27,13 @@ urlpatterns = [
 
     # main hub is root
     path('', include(('hub.urls', 'hub'), namespace='hub')),
-
+    
     # rooms and features
     path('whisper/', include(('whisper.urls', 'whisper'), namespace='whisper')),
     path('mindgarden/', include(('mindgarden.urls', 'mindgarden'), namespace='mindgarden')),
     path('library/', include(('library.urls', 'library'), namespace='library')),
-    path('crystal/', include(('crystal.urls', 'crystal'), namespace='crystal')),
-    path('memory/', include(('memory.urls', 'memory'), namespace='memory')),
-
+    path('crystal/', include(('crystal.urls', 'crystal'), namespace='crystal')), 
+    path('community/', include(('community.urls', 'community'), namespace='community')),
     # dashboard
     path('dashboard/', include('dashboard.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
