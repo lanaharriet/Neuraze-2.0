@@ -46,3 +46,20 @@ def crystal_home(request):
         'simplified': simplified,
         'points': points,
     })
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+from ai_chatbot.ai_speak import get_reply
+
+
+@csrf_exempt
+def ai_chatbot_api(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "POST required"}, status=405)
+
+    data = json.loads(request.body.decode("utf-8"))
+    user_msg = data.get("message", "")
+    reply = get_reply(user_msg)
+    return JsonResponse({"reply": reply})
+
