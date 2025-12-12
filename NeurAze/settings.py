@@ -54,13 +54,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    'community',
     'accounts',
     'hub',
     'whisper',
     'mindgarden',
     'library',
-    'crystal',
-    'memory',
+    'crystal', 
     'dashboard',
 ]
 
@@ -83,7 +83,7 @@ ROOT_URLCONF = 'NeurAze.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
