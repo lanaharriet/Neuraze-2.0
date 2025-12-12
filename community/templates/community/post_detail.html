@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>{{ post.title }}</h1>
+<p style="font-size:17px; white-space:pre-line;">{{ post.content }}</p>
+<small>Posted by {{ post.author.username }} on {{ post.created }}</small>
+
+<hr>
+
+<!-- LIKE BUTTON -->
+<form method="POST" action="{% url 'community:toggle_like' post.id %}">
+    {% csrf_token %}
+    <button style="padding:10px 20px; border-radius:10px; background:#6C63FF; color:white;">
+        {% if liked %}❤️ Liked{% else %}🤍 Like{% endif %}
+    </button>
+</form>
+
+<p>{{ post.total_likes }} Likes</p>
+
+<hr>
+
+<h3>Comments</h3>
+
+<!-- COMMENT LIST -->
+{% for c in comments %}
+<div style="
+    background:white;
+    padding:10px;
+    margin-bottom:10px;
+    border-radius:10px;
+">
+    <strong>{{ c.user.username }}</strong>  
+    <p>{{ c.comment }}</p>
+    <small>{{ c.created }}</small>
+</div>
+{% empty %}
+<p>No comments yet.</p>
+{% endfor %}
+
+<!-- ADD COMMENT FORM -->
+<form method="POST" action="{% url 'community:add_comment' post.id %}">
+    {% csrf_token %}
+    <textarea name="comment" placeholder="Write a comment..."
+              style="width:100%; height:100px; padding:10px; border-radius:10px;"></textarea><br><br>
+
+    <button type="submit" style="padding:10px 20px; background:#6C63FF; color:white; border-radius:10px;">
+        Comment
+    </button>
+</form>
+
+{% endblock %}
