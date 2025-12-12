@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from NeurAze import views  # needed for ai_chatbot_api
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -37,5 +39,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/', include('accounts.urls')),  # our custom signup/login
 
-]
+    # AI chatbot API
+    path('chatbot-reply/', views.chatbot_reply, name='chatbot_reply'),
 
+]
