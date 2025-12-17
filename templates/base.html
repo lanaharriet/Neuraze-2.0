@@ -7,11 +7,11 @@
     <title>NeurAze</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     
-    <!-- LEXEND FONT - Super readable! -->
+    
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-    /* LEXEND FONT FOR EVERYTHING */
+    
     body, h1, h2, h3, p, span, div, header, nav, a {
         font-family: 'Lexend', -apple-system, BlinkMacSystemFont, sans-serif !important;
     }
@@ -139,12 +139,12 @@
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Floating AI Chatbot Button -->
+    
     <div id="ai-chatbot-button">
         💬
     </div>
 
-    <!-- AI Chatbot Window -->
+    
     <div id="ai-chatbot-window">
         <div id="ai-chatbot-header">
             <span>NeurAze Assistant</span>
@@ -168,26 +168,20 @@
         const sendBtn = document.getElementById('ai-chatbot-send');
         const messages = document.getElementById('ai-chatbot-messages');
 
-        // ✅ PERFECT FORMATTING - No * or # symbols! Clean bullets + bold!
+        
         function appendMessage(text, cls) {
             const div = document.createElement('div');
             div.className = cls;
             
-            // Convert markdown to beautiful HTML
+            
             const cleanText = text
-                // **bold** → <strong>bold</strong>
+                
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                // * italic * → ignore (no italics)
                 .replace(/\*(.*?)\*/g, '$1')
-                // - bullet → • bullet
                 .replace(/^- (.*)$/gm, '<div style="margin: 2px 0 2px 15px; font-size: 13px;">• $1</div>')
-                // # Header → Bold header
                 .replace(/^# (.*)$/gm, '<div style="font-size: 15px; font-weight: 700; margin: 8px 0 4px 0;">$1</div>')
-                // ## Subheader → Bold subheader
                 .replace(/^## (.*)$/gm, '<div style="font-size: 14px; font-weight: 600; margin: 6px 0 3px 0;">$1</div>')
-                // 1. numbered → 1. numbered
                 .replace(/^(\d+\. .*)$/gm, '<div style="margin: 2px 0 2px 15px; font-size: 13px;">$1</div>')
-                // New lines → <br>
                 .replace(/\n/g, '<br>');
             
             div.innerHTML = cleanText;

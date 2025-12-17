@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'library',
     'crystal', 
     'dashboard',
+    'learning',
 ]
 
 MIDDLEWARE = [
@@ -141,7 +142,4 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "yourgmail@gmail.com"
 EMAIL_HOST_PASSWORD = "your-app-password"
 
-# =======================================================
-# GEMINI AI CHATBOT - ADD YOUR API KEY HERE 👇
-# =======================================================
-GENERATIVE_AI_KEY = "AIzaSyBwg1JynzfqKqz_JtlTseEL-3niZL8xsKY"
+GENERATIVE_AI_KEY = "AIzaSyBBp-e1A0z3qPadiyl4cbynvF1o31y-lDs"

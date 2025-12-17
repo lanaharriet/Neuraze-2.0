@@ -6,7 +6,16 @@ from django.http import HttpResponse
 from xhtml2pdf import pisa
 from django.template.loader import get_template
 from io import BytesIO
+from learning.utils import track_learning
 
+def library_readingsession(request):
+    print("VIEW HIT")
+
+    if request.user.is_authenticated:
+        print("USER:", request.user.username)
+        track_learning(request.user, "library")
+    else:
+        print("USER NOT AUTHENTICATED")
 @login_required
 def library_home(request):
     reading_text = ""
