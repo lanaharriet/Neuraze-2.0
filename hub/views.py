@@ -9,7 +9,7 @@ def hub(request):
         {'name': 'Mind Garden', 'url': 'mindgarden:mind_home', 'locked': False},
         {'name': 'Library Gate', 'url': 'library:library_home', 'locked': False},
         {"name": "Community Space", "url": "community:feed", "locked": False},
-
+        {"name":"Crystal Notes", "url":"crystal:crystal_home", "locked": False},
         {'name': 'Aurora Voice', 'url': 'aurora:aurora_home', 'locked': False},
         # ⬇ ADD COMMUNITY ROOM HERE
     ]
