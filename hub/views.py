@@ -8,10 +8,10 @@ def hub(request):
         {'name': 'Whisper Hall', 'url': 'whisper:whisper_home', 'locked': False},
         {'name': 'Mind Garden', 'url': 'mindgarden:mind_home', 'locked': False},
         {'name': 'Library Gate', 'url': 'library:library_home', 'locked': False},
-        {'name': 'Crystal Notes', 'url': 'crystal:crystal_home', 'locked': False},
+        {"name": "Community Space", "url": "community:feed", "locked": False},
 
+        {'name': 'Aurora Voice', 'url': 'aurora:aurora_home', 'locked': False},
         # ⬇ ADD COMMUNITY ROOM HERE
-        {'name': 'Community', 'url': 'community:home', 'locked': False},
     ]
 
     return render(request, 'hub/hub.html', {'rooms': rooms})

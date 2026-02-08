@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Lexend', sans-serif;
+    }
+
+    .aurora-container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: #F6F4FF;
+        padding: 50px;
+        border-radius: 28px;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 42px;
+        color: #6C63FF;
+        margin-bottom: 10px;
+    }
+
+    .subtitle {
+        font-size: 18px;
+        color: #5A5A7A;
+        margin-bottom: 40px;
+    }
+
+    .record-box {
+        background: white;
+        padding: 40px;
+        border-radius: 25px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        margin-bottom: 30px;
+    }
+
+    .record-box h2 {
+        color: #7A73FF;
+        font-weight: 500;
+    }
+
+    #recordBtn {
+        margin-top: 25px;
+        padding: 18px 40px;
+        font-size: 20px;
+        background: #6C63FF;
+        color: white;
+        border: none;
+        border-radius: 18px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    #recordBtn:hover {
+        background: #584ff0;
+    }
+
+    textarea {
+        width: 100%;
+        min-height: 220px;
+        border-radius: 20px;
+        padding: 20px;
+        font-size: 22px;
+        line-height: 1.9;
+        letter-spacing: 0.6px;
+        border: 2px solid #D4D0FF;
+        font-family: 'Lexend', sans-serif;
+        margin-top: 30px;
+        resize: vertical;
+    }
+
+    .next-step {
+        background: white;
+        padding: 30px;
+        border-radius: 25px;
+        margin-top: 40px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+
+    .next-step h3 {
+        color: #6C63FF;
+        margin-bottom: 20px;
+    }
+
+    .action-btn {
+        margin: 10px;
+        padding: 12px 25px;
+        border-radius: 15px;
+        background: #EAE8FF;
+        color: #5C57D8;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .action-btn:hover {
+        background: #D7D4FF;
+    }
+</style>
+
+<div class="aurora-container">
+
+    <h1>🎙️ Aurora Voice</h1>
+    <p class="subtitle">
+        Speak naturally and convert your voice into dyslexia-friendly text.
+    </p>
+
+    <div class="record-box">
+        <h2>🎙️ Tap below and start speaking</h2>
+        <button id="recordBtn">Start Recording</button>
+    </div>
+
+    <textarea
+        id="outputText"
+        placeholder="Your speech will appear here..."
+        spellcheck="false"
+    ></textarea>
+
+    <div class="next-step">
+        <h3>✨ Your text is ready. Where would you like to continue?</h3>
+
+        <button class="action-btn" onclick="alert('Sending to Crystal Notes (coming soon)')">
+            Send to Crystal Notes
+        </button>
+        <button class="action-btn" onclick="alert('Sending to Mind Garden (coming soon)')">
+            Send to Mind Garden
+        </button>
+        <button class="action-btn" onclick="alert('Opening Library Gate (coming soon)')">
+            Open in Library Gate
+        </button>
+        <button class="action-btn" onclick="alert('Saving to My Grove (coming soon)')">
+            Save to My Grove
+        </button>
+    </div>
+
+</div>
+
+<script>
+let recognition;
+let isRecording = false;
+let finalTranscript = "";
+
+const btn = document.getElementById("recordBtn");
+const output = document.getElementById("outputText");
+
+function createRecognition() {
+    const r = new webkitSpeechRecognition();
+    r.continuous = false;
+    r.interimResults = true;
+    r.lang = "en-US";
+
+    r.onstart = () => {
+        btn.innerText = "🎙️ Listening...";
+        btn.style.background = "#2ECC71";
+    };
+
+    r.onresult = (event) => {
+        let interim = "";
+
+        for (let i = 0; i < event.results.length; i++) {
+            if (event.results[i].isFinal) {
+                finalTranscript += event.results[i][0].transcript + " ";
+            } else {
+                interim += event.results[i][0].transcript;
+            }
+        }
+
+        output.value = finalTranscript + interim;
+
+        // ✅ AUTO-SCROLL FIX
+        output.scrollTop = output.scrollHeight;
+    };
+
+    r.onerror = (e) => {
+        console.warn("Speech error:", e);
+        resetRecording();
+    };
+
+    r.onend = () => {
+        if (isRecording) {
+            try {
+                r.start();
+            } catch {
+                recognition = createRecognition();
+                recognition.start();
+            }
+        } else {
+            resetRecording();
+        }
+    };
+
+    return r;
+}
+
+function resetRecording() {
+    isRecording = false;
+    btn.innerText = "Start Recording";
+    btn.style.background = "#6C63FF";
+}
+
+recognition = createRecognition();
+
+btn.onclick = () => {
+    if (!isRecording) {
+        finalTranscript = output.value.trim() + " ";
+        isRecording = true;
+        recognition.start();
+    } else {
+        isRecording = false;
+        recognition.stop();
+    }
+};
+</script>
+
+{% endblock %}
