@@ -142,4 +142,4 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "yourgmail@gmail.com"
 EMAIL_HOST_PASSWORD = "your-app-password"
 
-GENERATIVE_AI_KEY = "AIzaSyBBp-e1A0z3qPadiyl4cbynvF1o31y-lDs"
+GENERATIVE_AI_KEY = "AIzaSyDwaF4JhBzrVg21vwzTrV-QKIRRD4-YQAA"
