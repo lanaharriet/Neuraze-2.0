@@ -20,6 +20,7 @@ urlpatterns = [
     path('crystal/', include(('crystal.urls', 'crystal'), namespace='crystal')),
     path('community/', include(('community.urls', 'community'), namespace='community')),
 
+    path('aurora/', include(('aurora.urls', 'aurora'), namespace='aurora')),
     # Dashboard
     path('dashboard/', include('dashboard.urls')),
 
