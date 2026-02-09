@@ -133,9 +133,7 @@
         <button class="action-btn" onclick="alert('Opening Library Gate (coming soon)')">
             Open in Library Gate
         </button>
-        <button class="action-btn" onclick="alert('Saving to My Grove (coming soon)')">
-            Save to My Grove
-        </button>
+        
     </div>
 
 </div>
@@ -171,13 +169,10 @@ function createRecognition() {
         }
 
         output.value = finalTranscript + interim;
-
-        // ✅ AUTO-SCROLL FIX
         output.scrollTop = output.scrollHeight;
     };
 
-    r.onerror = (e) => {
-        console.warn("Speech error:", e);
+    r.onerror = () => {
         resetRecording();
     };
 
@@ -190,6 +185,7 @@ function createRecognition() {
                 recognition.start();
             }
         } else {
+            logActivity();
             resetRecording();
         }
     };
@@ -201,6 +197,41 @@ function resetRecording() {
     isRecording = false;
     btn.innerText = "Start Recording";
     btn.style.background = "#6C63FF";
+}
+
+function logActivity() {
+    let text = output.value.trim();
+    if (!text) return;
+
+    let wordCount = text.split(/\s+/).length;
+
+    if (wordCount >= 100) {
+        fetch("/aurora/log-activity/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCookie("csrftoken")
+            },
+            body: JSON.stringify({
+                word_count: wordCount
+            })
+        });
+    }
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+        let cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
 
 recognition = createRecognition();

@@ -1,9 +1,18 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from dashboard.models import UserActivity
+
+import json
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from ai_chatbot.ai_speak import get_reply
+
 
 def summarize_text(text):
     sentences = text.split('.')
     sentences = [s.strip() for s in sentences if s.strip()]
     return ' '.join(sentences[:3]) + '.' if sentences else ''
+
 
 def simplify_text(text):
     replacements = {
@@ -25,32 +34,40 @@ def simplify_text(text):
 
     return simple.capitalize()
 
+
 def extract_points(text):
     sentences = [s.strip() for s in text.split('.') if s.strip()]
     return sentences[:5]
 
+
+@login_required
 def crystal_home(request):
     summary = ""
     simplified = ""
     points = []
 
     if request.method == "POST":
-        user_text = request.POST.get("user_text")
+        user_text = request.POST.get("user_text", "")
 
         summary = summarize_text(user_text)
         simplified = simplify_text(user_text)
         points = extract_points(user_text)
+
+        # 🔥 Activity-Based Scoring
+        word_count = len(user_text.split())
+
+        if word_count >= 50:
+            UserActivity.objects.create(
+                user=request.user,
+                feature="Crystal",
+                points=10
+            )
 
     return render(request, 'crystal/crystal.html', {
         'summary': summary,
         'simplified': simplified,
         'points': points,
     })
-import json
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-
-from ai_chatbot.ai_speak import get_reply
 
 
 @csrf_exempt
@@ -61,5 +78,5 @@ def ai_chatbot_api(request):
     data = json.loads(request.body.decode("utf-8"))
     user_msg = data.get("message", "")
     reply = get_reply(user_msg)
-    return JsonResponse({"reply": reply})
 
+    return JsonResponse({"reply": reply})

@@ -1,13 +1,14 @@
 from django.urls import path
 from . import views
 
-app_name = 'community'
+app_name = "community"
 
 urlpatterns = [
-    path('feed/', views.feed, name='feed'),
-
-    # FIX: allow -1
-    path('post/<int:post_id>/react/<str:value>/', views.react_post, name='react_post'),
+    path('', views.feed, name='feed'),
+    path('post/<int:post_id>/', views.post_detail, name='post_detail'),
+    path('delete-post/<int:post_id>/', views.delete_post, name='delete_post'),
+    path('delete-comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
+    path('react/<int:post_id>/<int:value>/', views.react_post, name='react_post'),
     
-    path('post/<int:post_id>/comment/', views.add_comment, name='add_comment'),
+
 ]

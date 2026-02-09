@@ -4,56 +4,81 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator
 
 from .models import Post, Comment, PostReaction
-from .forms import PostForm, CommentForm
 
 
 @login_required
 def feed(request):
-    if request.method == "POST":
-        post_form = PostForm(request.POST)
-        if post_form.is_valid():
-            post = post_form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('community:feed')
-    else:
-        post_form = PostForm()
+
+    # CREATE POST
+    if request.method == "POST" and "create_post" in request.POST:
+        content = request.POST.get("content")
+        if content:
+            Post.objects.create(
+                author=request.user,
+                content=content
+            )
+        return redirect('community:feed')
 
     posts = Post.objects.all().order_by('-created_at')
     paginator = Paginator(posts, 5)
     page_obj = paginator.get_page(request.GET.get('page'))
 
-    for post in page_obj:
-        post.likes_count = post.reactions.filter(value=1).count()
-        post.dislikes_count = post.reactions.filter(value=-1).count()
-        reaction = PostReaction.objects.filter(user=request.user, post=post).first()
-        post.user_reaction = reaction.value if reaction else 0
-
     return render(request, 'community/feed.html', {
-        'page_obj': page_obj,
-        'post_form': post_form,
-        'comment_form': CommentForm()
+        'page_obj': page_obj
     })
 
 
 @login_required
-def add_comment(request, post_id):
+def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
+
+    # ADD COMMENT
     if request.method == "POST":
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.user = request.user
-            comment.post = post
-            comment.save()
+        content = request.POST.get("content")
+        if content:
+            Comment.objects.create(
+                user=request.user,
+                post=post,
+                content=content
+            )
+        return redirect('community:post_detail', post_id=post.id)
+
+    likes = post.reactions.filter(value=1).count()
+    dislikes = post.reactions.filter(value=-1).count()
+
+    return render(request, 'community/post_detail.html', {
+        'post': post,
+        'likes': likes,
+        'dislikes': dislikes
+    })
+
+
+@login_required
+def delete_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    if post.author == request.user:
+        post.delete()
+
+    return redirect('community:feed')
+
+
+@login_required
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+
+    if comment.user == request.user:
+        post_id = comment.post.id
+        comment.delete()
+        return redirect('community:post_detail', post_id=post_id)
+
     return redirect('community:feed')
 
 
 @login_required
 def react_post(request, post_id, value):
     post = get_object_or_404(Post, id=post_id)
-
-    value = int(value)  # NOW -1 WORKS
+    value = int(value)
 
     reaction = PostReaction.objects.filter(
         user=request.user,
@@ -75,10 +100,5 @@ def react_post(request, post_id, value):
 
     return JsonResponse({
         'likes': post.reactions.filter(value=1).count(),
-        'dislikes': post.reactions.filter(value=-1).count(),
-        'user_reaction': (
-            PostReaction.objects.filter(user=request.user, post=post).first().value
-            if PostReaction.objects.filter(user=request.user, post=post).exists()
-            else 0
-        )
+        'dislikes': post.reactions.filter(value=-1).count()
     })

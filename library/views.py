@@ -1,28 +1,41 @@
-
-
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from xhtml2pdf import pisa
 from django.template.loader import get_template
-from io import BytesIO
-from learning.utils import track_learning
+from django.utils.timezone import now
+from datetime import timedelta
+from xhtml2pdf import pisa
 
-def library_readingsession(request):
-    print("VIEW HIT")
+from dashboard.models import UserActivity
 
-    if request.user.is_authenticated:
-        print("USER:", request.user.username)
-        track_learning(request.user, "library")
-    else:
-        print("USER NOT AUTHENTICATED")
+
 @login_required
 def library_home(request):
     reading_text = ""
-    if request.method == "POST":
-        reading_text = request.POST.get("reading_text", "")
 
-        # Check if PDF button was clicked
+    if request.method == "POST":
+        reading_text = request.POST.get("reading_text", "").strip()
+
+        word_count = len(reading_text.split())
+
+        # 🔥 Activity-Based Scoring
+        if word_count >= 50:
+            today = now() - timedelta(days=1)
+
+            already_logged = UserActivity.objects.filter(
+                user=request.user,
+                feature="Library",
+                created_at__gte=today
+            ).exists()
+
+            if not already_logged:
+                UserActivity.objects.create(
+                    user=request.user,
+                    feature="Library",
+                    points=5
+                )
+
+        # 📄 Download PDF logic
         if "download_pdf" in request.POST:
             template = get_template("library/library_pdf.html")
             html = template.render({"reading_text": reading_text})

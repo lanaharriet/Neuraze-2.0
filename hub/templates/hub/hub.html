@@ -154,9 +154,10 @@ body {
         <div class="card">
             <h3>📊 Learning Insights</h3>
 
-            <div class="progress-ring">
-                <div class="progress-inner">78%</div>
-            </div>
+            <div class="progress-ring"
+     style="background: conic-gradient(#4f46e5 0% {{ progress }}%, #e5e7eb {{ progress }}% 100%);">
+    <div class="progress-inner">{{ progress }}%</div>
+</div>
 
             <p>Your overall learning comprehension based on how actively you use NeurAze features.</p>
         </div>
