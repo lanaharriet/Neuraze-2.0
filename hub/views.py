@@ -11,8 +11,13 @@ def hub(request):
         {'name': 'Whisper Hall', 'url': 'whisper:whisper_home', 'locked': False},
         {'name': 'Mind Garden', 'url': 'mindgarden:mind_home', 'locked': False},
         {'name': 'Library Gate', 'url': 'library:library_home', 'locked': False},
+<<<<<<< HEAD
         {'name': 'Community Space', 'url': 'community:feed', 'locked': False},
         {'name': 'Crystal Notes', 'url': 'crystal:crystal_home', 'locked': False},
+=======
+        {"name": "Community Space", "url": "community:feed", "locked": False},
+        {"name":"Crystal Notes", "url":"crystal:crystal_home", "locked": False},
+>>>>>>> 70e87ed73af5946502cd0243ee67d1880ad65587
         {'name': 'Aurora Voice', 'url': 'aurora:aurora_home', 'locked': False},
     ]
 
