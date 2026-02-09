@@ -4,39 +4,38 @@
     <meta charset="UTF-8">
     <title>NeurAze – Library PDF</title>
 
-    <!-- Lexend font -->
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600&display=swap" rel="stylesheet">
-
     <style>
+        @page {
+            size: A4;
+            margin: 2.5cm;
+        }
+
         body {
-            font-family: 'Lexend', sans-serif;
-            margin: 40px;
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 18px;
             line-height: 1.7;
         }
 
         .title-card {
             text-align: center;
             margin-bottom: 30px;
-            font-size: 28px;
-            font-weight: 600;
+            font-size: 26px;
+            font-weight: bold;
         }
 
-        .content-block {
+        .content {
             white-space: pre-wrap;
-            font-size: 20px;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- TITLE CARD (must appear in PDF) -->
     <div class="title-card">
         NeurAze — Dyslexia Friendly Reader
     </div>
 
-    <!-- ONLY THE CONVERTED TEXT -->
-    <div class="content-block">
+    <div class="content">
         {{ reading_text }}
     </div>
 

@@ -1,133 +1,214 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Crystal Notes</title>
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
 
-    <!-- Lexend Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-        }
+<style>
+    body {
+        font-family: 'Lexend', sans-serif;
+    }
 
-        body {
-            background: linear-gradient(135deg, #EAF6FF, #EDEBFF);
-            font-family: 'Lexend', Arial, sans-serif;
-            padding: 40px;
-            text-align: center;
-        }
+    .crystal-container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: #F6F4FF;
+        padding: 50px;
+        border-radius: 28px;
+        text-align: center;
+    }
 
-        h1 {
-            color: #6C63FF;
-            font-size: 40px;
-            margin-bottom: 8px;
-        }
+    h1 {
+        font-size: 42px;
+        color: #6C63FF;
+        margin-bottom: 10px;
+    }
 
-        p {
-            color: #4b5563;
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
+    .subtitle {
+        font-size: 18px;
+        color: #5A5A7A;
+        margin-bottom: 40px;
+    }
 
-        textarea {
-            width: 80%;
-            max-width: 900px;
-            height: 180px;
-            padding: 15px;
-            font-size: 18px;
-            border-radius: 15px;
-            border: 2px solid #B8B3FF;
-            font-family: 'Lexend', Arial, sans-serif;
-            background: #ffffff;
-        }
+    .input-box {
+        background: white;
+        padding: 40px;
+        border-radius: 25px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        margin-bottom: 30px;
+    }
 
-        button {
-            margin-top: 20px;
-            padding: 15px 35px;
-            font-size: 20px;
-            background: #6C63FF;
-            color: white;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-family: 'Lexend', Arial, sans-serif;
-        }
+    .input-box h2 {
+        color: #7A73FF;
+        font-weight: 500;
+        margin-bottom: 20px;
+    }
 
-        button:hover {
-            background: #5848ff;
-        }
+    textarea {
+        width: 100%;
+        min-height: 220px;
+        border-radius: 20px;
+        padding: 20px;
+        font-size: 22px;
+        line-height: 1.9;
+        letter-spacing: 0.6px;
+        border: 2px solid #D4D0FF;
+        font-family: 'Lexend', sans-serif;
+        resize: vertical;
+    }
 
-        .result-box {
-            margin-top: 30px;
-            padding: 20px;
-            background: #FFFFFF;
-            border-radius: 15px;
-            width: 80%;
-            max-width: 900px;
-            text-align: left;
-            margin-left: auto;
-            margin-right: auto;
-            font-family: 'Lexend', Arial, sans-serif;
-            line-height: 1.7;
-            font-size: 18px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-        }
+    #generateBtn {
+        margin-top: 25px;
+        padding: 18px 40px;
+        font-size: 20px;
+        background: #6C63FF;
+        color: white;
+        border: none;
+        border-radius: 18px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
 
-        h2 {
-            color: #4A3AFF;
-            margin-bottom: 10px;
-        }
+    #generateBtn:hover {
+        background: #584ff0;
+    }
 
-        ul {
-            padding-left: 20px;
-        }
+    .result-box {
+        background: white;
+        padding: 40px;
+        border-radius: 25px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        margin-top: 40px;
+        text-align: left;
+    }
 
-        li {
-            margin-bottom: 8px;
-        }
-    </style>
+    .result-box h3 {
+        color: #6C63FF;
+        margin-bottom: 20px;
+    }
 
-</head>
-<body>
+    .next-step {
+        background: white;
+        padding: 30px;
+        border-radius: 25px;
+        margin-top: 40px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        text-align: center;
+    }
 
-    <h1>Crystal Notes</h1>
-    <p>Paste your text and get simplified dyslexia-friendly notes</p>
+    .next-step h3 {
+        color: #6C63FF;
+        margin-bottom: 20px;
+    }
+    /* TOP BAR */
+.top-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+/* BACK BUTTON */
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 14px;
+    background: #EAE8FF;
+    color: #5C57D8;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+.back-btn:hover {
+    background: #D7D4FF;
+    transform: translateX(-2px);
+}
+
+
+    .action-btn {
+        margin: 10px;
+        padding: 12px 25px;
+        border-radius: 15px;
+        background: #EAE8FF;
+        color: #5C57D8;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .action-btn:hover {
+        background: #D7D4FF;
+    }
+</style>
+
+<div class="crystal-container">
+    <div class="top-bar">
+    <a href="{% url 'hub:hub' %}" class="back-btn">
+        ← Back to Hub
+    </a>
+</div>
+
+
+    <h1>💎 Crystal Notes</h1>
+    <p class="subtitle">
+        Paste your text and get clear, dyslexia-friendly notes.
+    </p>
 
     <form method="POST">
         {% csrf_token %}
-        <textarea name="user_text" placeholder="Paste text here...">{{ request.POST.user_text }}</textarea>
-        <br>
-        <button type="submit">Generate Notes</button>
+
+        <div class="input-box">
+            <h2>📘 Add your text below</h2>
+
+            <textarea
+                name="user_text"
+                placeholder="Paste your text here..."
+                spellcheck="false"
+            >{{ request.POST.user_text }}</textarea>
+
+            <button id="generateBtn" type="submit">
+                Generate Notes
+            </button>
+        </div>
     </form>
 
-    {% if summary %}
+    {% if summary or simplified or points %}
     <div class="result-box">
-        <h2>Summary</h2>
+        {% if summary %}
+        <h3>Summary</h3>
         <p>{{ summary }}</p>
-    </div>
-    {% endif %}
+        {% endif %}
 
-    {% if simplified %}
-    <div class="result-box">
-        <h2>Simplified Version</h2>
+        {% if simplified %}
+        <h3>Simplified Version</h3>
         <p>{{ simplified }}</p>
-    </div>
-    {% endif %}
+        {% endif %}
 
-    {% if points %}
-    <div class="result-box">
-        <h2>Key Points</h2>
+        {% if points %}
+        <h3>Key Points</h3>
         <ul>
             {% for p in points %}
             <li>{{ p }}</li>
             {% endfor %}
         </ul>
+        {% endif %}
+    </div>
+
+    <div class="next-step">
+        <h3>✨ What would you like to do next?</h3>
+
+        <button class="action-btn">
+            Save to Library Gate
+        </button>
+        <button class="action-btn">
+            Send to Mind Garden
+        </button>
     </div>
     {% endif %}
 
-</body>
-</html>
+</div>
+
+{% endblock %}

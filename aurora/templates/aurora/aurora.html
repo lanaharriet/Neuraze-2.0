@@ -86,6 +86,33 @@
         color: #6C63FF;
         margin-bottom: 20px;
     }
+    /* TOP BAR */
+.top-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+/* BACK BUTTON */
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 14px;
+    background: #EAE8FF;
+    color: #5C57D8;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    transition: 0.2s ease;
+}
+
+.back-btn:hover {
+    background: #D7D4FF;
+    transform: translateX(-2px);
+}
+
 
     .action-btn {
         margin: 10px;
@@ -104,6 +131,12 @@
 </style>
 
 <div class="aurora-container">
+    <div class="top-bar">
+    <a href="{% url 'hub:hub' %}" class="back-btn">
+        ← Back to Hub
+    </a>
+</div>
+
 
     <h1>🎙️ Aurora Voice</h1>
     <p class="subtitle">

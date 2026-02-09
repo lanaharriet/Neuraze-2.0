@@ -1,22 +1,49 @@
 {% extends "base.html" %}
 {% block content %}
 
-<!-- Load Lexend font for dyslexia-friendly output -->
+<!-- Lexend font -->
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-/* FULL VIEWPORT GRADIENT – SAME AS HUB */
+/* PAGE BACKGROUND */
 .page-wrapper {
-    min-height: calc(100vh - 60px); /* accounts for header */
-    padding: 40px 0 60px 0;
+    min-height: calc(100vh - 60px);
+    padding: 30px 0 60px;
     background: linear-gradient(135deg, #EAF6FF, #EDEBFF);
 }
 
-/* MAIN CONTAINER */
+/* CONTAINER */
 .library-container {
     max-width: 900px;
     margin: auto;
     font-family: 'Lexend', Arial, sans-serif;
+}
+
+/* TOP BAR */
+.top-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+/* BACK BUTTON */
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 10px;
+    background: #eef2ff;
+    color: #4f46e5;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all .15s ease;
+}
+
+.back-btn:hover {
+    background: #e0e7ff;
+    transform: translateX(-2px);
 }
 
 /* TITLE */
@@ -24,6 +51,32 @@
     margin-bottom: 20px;
     font-size: 38px;
     color: #111827;
+}
+
+/* FILE INPUT */
+.file-input-hidden {
+    display: none;
+}
+
+.file-upload-label {
+    display: inline-block;
+    padding: 10px 22px;
+    border-radius: 10px;
+    background: #6c63ff;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.file-upload-label:hover {
+    background: #5848ff;
+}
+
+.file-name {
+    display: block;
+    margin-top: 6px;
+    font-size: 14px;
+    color: #374151;
 }
 
 /* TEXTAREA */
@@ -35,47 +88,44 @@
     border: 2px solid #c7d2fe;
     border-radius: 12px;
     background: #ffffff;
-    font-family: Arial, sans-serif;
+    font-family: 'Lexend', Arial, sans-serif;
 }
 
 /* BUTTONS */
-.btn-primary {
-    padding: 10px 22px;
-    border-radius: 10px;
-    background: #6c63ff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    margin-right: 10px;
-    font-size: 15px;
-}
-
+.btn-primary,
 .btn-secondary {
     padding: 10px 22px;
     border-radius: 10px;
-    background: #ff8c42;
-    color: white;
     border: none;
     cursor: pointer;
     font-size: 15px;
+    color: white;
+}
+
+.btn-primary {
+    background: #6c63ff;
+    margin-right: 10px;
 }
 
 .btn-primary:hover {
     background: #5848ff;
 }
 
+.btn-secondary {
+    background: #ff8c42;
+}
+
 .btn-secondary:hover {
     background: #f07c2f;
 }
 
-/* OUTPUT BOX */
+/* OUTPUT */
 .output-box {
     margin-top: 24px;
     padding: 18px;
     background: #ffffff;
     border-radius: 14px;
     line-height: 1.7;
-    font-family: 'Lexend', sans-serif;
     font-size: 20px;
     white-space: pre-wrap;
     box-shadow: 0 10px 25px rgba(0,0,0,0.08);
@@ -83,23 +133,47 @@
 </style>
 
 <div class="page-wrapper">
-
     <div class="library-container">
+
+        <!-- 🔙 BACK TO HUB -->
+        <div class="top-bar">
+            <a href="{% url 'hub:hub' %}" class="back-btn">
+                ← Back to Hub
+            </a>
+        </div>
 
         <h1>📖 Library Gate</h1>
 
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
 
-            <textarea 
+            <!-- FILE UPLOAD -->
+            <label for="upload_file" class="file-upload-label">
+                📂 Choose File
+            </label>
+            <input
+                type="file"
+                id="upload_file"
+                name="upload_file"
+                class="file-input-hidden"
+                accept=".pdf,.docx"
+                onchange="document.getElementById('file-name').textContent = this.files[0]?.name || ''"
+            >
+            <span id="file-name" class="file-name"></span>
+
+            <br><br>
+
+            <!-- TEXT AREA -->
+            <textarea
                 name="reading_text"
                 rows="12"
                 class="library-textarea"
-                placeholder="Paste your text here..."
+                placeholder="Paste your text here or upload a document above..."
             >{{ reading_text }}</textarea>
 
             <br><br>
 
+            <!-- ACTION BUTTONS -->
             <button type="submit" name="read_on_screen" class="btn-primary">
                 Convert
             </button>
@@ -116,7 +190,6 @@
         {% endif %}
 
     </div>
-
 </div>
 
 {% endblock %}
