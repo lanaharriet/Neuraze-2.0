@@ -1,113 +1,242 @@
 {% extends 'base.html' %}
 {% block content %}
 
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
+
 body {
-    background: linear-gradient(135deg, #EAF6FF, #EDEBFF);
-}
-
-.hub-container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 30px;
     font-family: 'Lexend', sans-serif;
+    color: #1F2937;
+    background: linear-gradient(180deg, #EEF4FF 0%, #F8FAFF 100%);
+    overflow-x: hidden;
 }
 
-.hub-title {
+/* SOFT ANIMATED BACKGROUND GLOW */
+body::before {
+    content: "";
+    position: fixed;
+    top: -200px;
+    left: -200px;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(59,130,246,0.25) 0%, transparent 70%);
+    animation: floatGlow 12s ease-in-out infinite;
+    z-index: -1;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    bottom: -250px;
+    right: -200px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(99,102,241,0.20) 0%, transparent 70%);
+    animation: floatGlow 15s ease-in-out infinite reverse;
+    z-index: -1;
+}
+
+@keyframes floatGlow {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(40px); }
+    100% { transform: translateY(0px); }
+}
+
+/* MAIN WRAPPER */
+.hub-wrapper {
+    max-width: 1300px;
+    margin: auto;
+    padding: 60px 20px 80px 20px;
+}
+
+/* WELCOME SECTION WITH RADIAL GLOW */
+.welcome {
+    margin-bottom: 50px;
+    position: relative;
+}
+
+.welcome::before {
+    content: "";
+    position: absolute;
+    top: -40px;
+    left: -60px;
+    width: 400px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+    z-index: -1;
+}
+
+.welcome h1 {
     font-size: 36px;
     font-weight: 700;
-    color: #111827;
-    margin-bottom: 28px;
+    margin-bottom: 10px;
+    color: #1E3A8A;
+}
+
+.welcome p {
+    font-size: 18px;
+    color: #475569;
 }
 
 /* GRID */
 .hub-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 28px;
-    align-items: stretch;
+    gap: 32px;
 }
 
-/* CARD */
+/* CARDS */
 .card-link {
     text-decoration: none;
     color: inherit;
 }
 
 .card {
-    background: #ffffff;
+    background: rgba(255,255,255,0.75);
+    backdrop-filter: blur(12px);
     border-radius: 22px;
-    padding: 22px;
+    padding: 32px;
     min-height: 220px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    box-shadow: 0 12px 28px rgba(0,0,0,0.08);
-    transition: box-shadow .2s ease;
+    border: 1px solid #DCE7FF;
+    transition: all 0.3s ease;
+    animation: fadeUp 0.8s ease forwards;
+    opacity: 0;
+}
+
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.2s; }
+.card:nth-child(3) { animation-delay: 0.3s; }
+.card:nth-child(4) { animation-delay: 0.4s; }
+.card:nth-child(5) { animation-delay: 0.5s; }
+.card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes fadeUp {
+    from {
+        transform: translateY(25px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .card:hover {
-    box-shadow: 0 16px 36px rgba(0,0,0,0.12);
+    border: 1px solid #A5B4FC;
+    box-shadow: 0 20px 40px rgba(59,130,246,0.18);
+    transform: translateY(-6px);
 }
 
 .card h3 {
-    margin: 0 0 8px;
     font-size: 20px;
     font-weight: 600;
+    margin-bottom: 14px;
+    color: #1E3A8A;
 }
 
 .card p {
-    font-size: 14.5px;
-    color: #6b7280;
-    line-height: 1.5;
-    margin-bottom: 12px;
+    font-size: 15px;
+    line-height: 1.8;
+    color: #475569;
 }
 
-.enter-btn {
-    align-self: flex-start;
-    padding: 8px 16px;
+/* BUTTON */
+.explore-btn {
+    margin-top: 22px;
+    padding: 10px 18px;
+    background: linear-gradient(90deg, #E0E7FF, #DBEAFE);
+    color: #1D4ED8;
+    border-radius: 12px;
     font-size: 14px;
-    border-radius: 10px;
-    background: #eef2ff;
-    color: #4f46e5;
     font-weight: 500;
     border: none;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-.enter-btn:hover {
-    background: #e0e7ff;
+.explore-btn:hover {
+    background: linear-gradient(90deg, #C7D2FE, #BFDBFE);
 }
 
-/* LEARNING INSIGHTS */
-.progress-ring {
-    width: 80px;
-    height: 80px;
+/* BOTTOM SECTION */
+.bottom-section {
+    grid-column: span 3;
+    display: flex;
+    gap: 32px;
+    margin-top: 30px;
+}
+
+.insight-card {
+    flex: 1;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 22px;
+    padding: 35px;
+    border: 1px solid #DCE7FF;
+}
+
+/* PROGRESS CIRCLE */
+.progress-circle {
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
-    background: conic-gradient(#4f46e5 0% 78%, #e5e7eb 78% 100%);
+    background: conic-gradient(#2563EB 0% {{ progress }}%, #E2E8F0 {{ progress }}% 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 10px 0;
+    margin-bottom: 25px;
 }
 
 .progress-inner {
-    width: 58px;
-    height: 58px;
-    background: #ffffff;
+    width: 95px;
+    height: 95px;
+    background: #FFFFFF;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
-    color: #111827;
-    font-size: 14px;
+    font-weight: 700;
+    font-size: 20px;
+    color: #1E3A8A;
 }
+
+/* FOCUS */
+.focus-list {
+    margin-top: 18px;
+    line-height: 2;
+    font-size: 15px;
+    color: #334155;
+}
+
+.start-btn {
+    margin-top: 20px;
+    padding: 10px 18px;
+    background: #2563EB;
+    color: white;
+    border-radius: 12px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.start-btn:hover {
+    background: #1D4ED8;
+}
+
+
 </style>
 
-<div class="hub-container">
+<div class="hub-wrapper">
 
-    <div class="hub-title">NeurAze Hub</div>
+    <div class="welcome">
+        <h1>Welcome back, {{ request.user.username }} 👋</h1>
+        <p>Choose a calm space to begin.</p>
+    </div>
 
     <div class="hub-grid">
 
@@ -115,51 +244,67 @@ body {
         <a href="{% url r.url %}" class="card-link">
             <div class="card">
 
-                {% if r.name == "Whisper Hall" %}
-                    <h3>🗣️ Whisper Hall</h3>
-                    <p>A peaceful, distraction-free space designed for calm reading and quiet focus.</p>
+                {% if r.name == "Aurora Voice" %}
+                    <h3>🎙️ Aurora Voice</h3>
+                    <p>Convert speech into dyslexia-friendly text with clarity.</p>
+
+                {% elif r.name == "Whisper Hall" %}
+                    <h3>🪶 Whisper Hall</h3>
+                    <p>A distraction-free reading environment for focused learning.</p>
 
                 {% elif r.name == "Mind Garden" %}
-                    <h3>🌱 Mind Garden</h3>
-                    <p>Nurture ideas, reflect deeply, and grow understanding at your own pace.</p>
+                    <h3>🌿 Mind Garden</h3>
+                    <p>Create flashcards and reflect deeply at your pace.</p>
 
-                {% elif r.name == "Library Gate" %}
-                    <h3>📚 Library Gate</h3>
-                    <p>Your gateway to structured knowledge, references, and curated learning paths.</p>
+                {% elif r.name == "Community Space" %}
+                    <h3>🤝 Community</h3>
+                    <p>Connect, share insights, and learn together safely.</p>
 
                 {% elif r.name == "Crystal Notes" %}
                     <h3>💎 Crystal Notes</h3>
-                    <p>Clear, simplified notes crafted for better comprehension and easy recall.</p>
+                    <p>Simplify complex topics into clear structured notes.</p>
 
-                {% elif r.name == "Aurora Voice" %}
-                    <h3>🎙️ Aurora Voice</h3>
-                    <p>Speak freely and convert your voice into dyslexia-friendly text.</p>
-
-                {% elif r.name == "Community" %}
-                    <h3>🤝 Community</h3>
-                    <p>A safe, supportive space to connect, share thoughts, and learn together.</p>
-
-                {% else %}
-                    <h3>📘 {{ r.name }}</h3>
-                    <p>Your personalized NeurAze learning space.</p>
+                {% elif r.name == "Library Gate" %}
+                    <h3>📖 Library Gate</h3>
+                    <p>Structured reading and export-friendly tools.</p>
                 {% endif %}
 
-                <button class="enter-btn">Enter →</button>
+                <button class="explore-btn">Enter →</button>
 
             </div>
         </a>
         {% endfor %}
 
-        <!-- LEARNING INSIGHTS -->
-        <div class="card">
-            <h3>📊 Learning Insights</h3>
+        <div class="bottom-section">
 
-            <div class="progress-ring"
-     style="background: conic-gradient(#4f46e5 0% {{ progress }}%, #e5e7eb {{ progress }}% 100%);">
-    <div class="progress-inner">{{ progress }}%</div>
-</div>
+            <div class="insight-card">
+                <h3>🚀 Learning Momentum</h3>
 
-            <p>Your overall learning comprehension based on how actively you use NeurAze features.</p>
+                <div class="progress-circle">
+                    <div class="progress-inner">
+                        {{ progress }}%
+                    </div>
+                </div>
+
+                <p style="line-height:1.8; color:#6B7280;">
+                    Your consistency across learning spaces this week.
+                </p>
+            </div>
+
+            <div class="insight-card">
+                <h3>🎯 Today’s Focus</h3>
+
+                <div class="focus-list">
+                    📖 Read one concept<br>
+                    💎 Simplify one topic<br>
+                    🌿 Create three flashcards
+                </div>
+
+                <a href="{% url 'mindgarden:mind_home' %}">
+                    <button class="start-btn">Start Now →</button>
+                </a>
+            </div>
+
         </div>
 
     </div>

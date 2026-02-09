@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <title>Login | NeurAze</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
+
         body {
             margin: 0;
             height: 100vh;
@@ -15,20 +16,67 @@
             justify-content: center;
             align-items: center;
             font-family: 'Lexend', sans-serif;
-            background: linear-gradient(135deg, #EAF6FF, #EDEBFF);
+            background: linear-gradient(180deg, #EEF4FF 0%, #F8FAFF 100%);
+            overflow: hidden;
+            position: relative;
         }
 
+        /* Animated Soft Glow Background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: -300px;
+            left: -300px;
+            width: 900px;
+            height: 900px;
+            background: radial-gradient(circle, rgba(37,99,235,0.18) 0%, transparent 70%);
+            animation: floatGlow 18s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            bottom: -250px;
+            right: -250px;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(99,102,241,0.18) 0%, transparent 70%);
+            animation: floatGlow 22s ease-in-out infinite reverse;
+            z-index: 0;
+        }
+
+        @keyframes floatGlow {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(60px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Main Container */
         .container {
-            width: 85%;
-            max-width: 900px;
-            background: rgba(255,255,255,0.55);
-            backdrop-filter: blur(18px);
-            border-radius: 26px;
-            padding: 45px 50px;
+            position: relative;
+            z-index: 2;
+            width: 90%;
+            max-width: 1000px;
+            background: #FFFFFF;
+            border-radius: 28px;
+            padding: 60px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            box-shadow: 0 25px 60px rgba(37,99,235,0.15);
+            animation: fadeUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* LEFT SIDE */
@@ -37,87 +85,113 @@
         }
 
         .left h1 {
-            font-size: 36px;
+            font-size: 40px;
             font-weight: 700;
-            color: #2d2d2d;
-            margin-bottom: 10px;
+            color: #1E3A8A;
+            margin-bottom: 16px;
         }
 
         .left p {
-            font-size: 16px;
-            color: #555;
-            line-height: 1.5;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #334155;
         }
 
-        /* RIGHT FORM CARD */
+        /* RIGHT SIDE FORM */
         .form-card {
             width: 42%;
-            background: white;
-            padding: 30px 32px;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
 
         .form-card h2 {
-            text-align: center;
             font-size: 24px;
-            margin-bottom: 18px;
             font-weight: 700;
+            margin-bottom: 25px;
+            color: #1E3A8A;
         }
 
         label {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
-            margin-top: 14px;
+            margin-top: 18px;
             display: block;
+            letter-spacing: 0.4px;
         }
 
         input {
             width: 100%;
-            padding: 12px;
-            margin-top: 5px;
-            border-radius: 12px;
-            border: 1px solid #cfd3f5;
-            background: #f7f8ff;
-            font-size: 14px;
+            padding: 14px;
+            margin-top: 6px;
+            border-radius: 14px;
+            border: 1px solid #DCE7FF;
+            background: #F8FAFF;
+            font-size: 15px;
+            transition: all 0.25s ease;
         }
 
         input:focus {
             outline: none;
-            border-color: #5c6aff;
-            background: #fff;
+            border-color: #2563EB;
+            background: #FFFFFF;
+            box-shadow: 0 0 0 4px rgba(37,99,235,0.12);
         }
 
         .error {
             font-size: 12px;
-            color: #d9534f;
+            color: #DC2626;
             margin-top: 4px;
         }
 
         button {
             width: 100%;
-            padding: 13px;
-            border-radius: 12px;
+            padding: 14px;
+            border-radius: 14px;
             border: none;
-            background: #5C6AFF;
+            background: linear-gradient(90deg, #2563EB, #3B82F6);
             color: white;
-            font-size: 15px;
-            margin-top: 22px;
+            font-size: 16px;
+            margin-top: 28px;
             cursor: pointer;
             font-weight: 600;
+            box-shadow: 0 12px 25px rgba(37,99,235,0.30);
+            transition: all 0.3s ease;
         }
 
         button:hover {
-            background: #4f59ff;
+            transform: translateY(-2px);
+            box-shadow: 0 16px 35px rgba(37,99,235,0.40);
         }
 
         .bottom-text {
             display: block;
-            margin-top: 12px;
+            margin-top: 20px;
             text-align: center;
             font-size: 14px;
-            color: #333;
+            color: #334155;
+            text-decoration: none;
         }
+
+        .bottom-text:hover {
+            color: #2563EB;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .container {
+                flex-direction: column;
+                padding: 40px;
+            }
+
+            .left,
+            .form-card {
+                width: 100%;
+            }
+
+            .left {
+                margin-bottom: 40px;
+                text-align: center;
+            }
+        }
+
     </style>
 </head>
 
@@ -127,11 +201,14 @@
 
     <div class="left">
         <h1>Welcome to NeurAze</h1>
-        <p>AI-powered, dyslexia-friendly learning for every student.</p>
+        <p>
+            Calm, focused, and dyslexia-friendly learning designed for clarity,
+            comfort, and confidence.
+        </p>
     </div>
 
     <div class="form-card">
-        <h2>Login to NeurAze</h2>
+        <h2>Login to your account</h2>
 
         <form method="POST">
             {% csrf_token %}
@@ -148,7 +225,7 @@
         </form>
 
         <a href="{% url 'accounts:signup' %}" class="bottom-text">
-            Don’t have an account? Sign up
+            Don’t have an account? Create one
         </a>
     </div>
 

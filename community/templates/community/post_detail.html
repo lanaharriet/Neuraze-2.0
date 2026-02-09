@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+body {
+    font-family: 'Lexend', sans-serif;
+    background: linear-gradient(135deg, #EAF6FF, #EDEBFF);
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+    margin-bottom: 20px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 2px solid #D4D0FF;
+    resize: none;
+}
+
+button {
+    margin-top: 8px;
+    padding: 6px 16px;
+    border-radius: 8px;
+    background: #6C63FF;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #584ff0;
+}
+
+.reaction-btn {
+    background: #EEF2FF;
+    color: black;
+    margin-right: 8px;
+}
+
+.delete-btn {
+    background: #ff4d4d;
+    margin-left: 10px;
+}
+</style>
+
+<div class="container">
+
+    <div class="card">
+        <strong>{{ post.author.username }}</strong><br>
+        <small>{{ post.created_at|date:"M d, Y H:i" }}</small>
+
+        <p style="margin-top:15px;">
+            {{ post.content }}
+        </p>
+
+        <div>
+            <button class="reaction-btn" onclick="react({{ post.id }}, 1)">
+                👍 {{ likes }}
+            </button>
+            <button class="reaction-btn" onclick="react({{ post.id }}, -1)">
+                👎 {{ dislikes }}
+            </button>
+
+            {% if post.author == user %}
+                <a href="{% url 'community:delete_post' post.id %}">
+                    <button class="delete-btn">Delete Post</button>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ADD COMMENT -->
+    <div class="card">
+        <form method="POST">
+            {% csrf_token %}
+            <textarea name="content" placeholder="Write a comment..." required></textarea>
+            <button type="submit">Comment</button>
+        </form>
+    </div>
+
+    <!-- COMMENTS -->
+    {% for comment in comments %}
+        <div class="card">
+            <strong>{{ comment.user.username }}</strong><br>
+            <small>{{ comment.created_at|date:"M d, Y H:i" }}</small>
+
+            <p style="margin-top:10px;">
+                {{ comment.content }}
+            </p>
+
+            {% if comment.user == user %}
+                <a href="{% url 'community:delete_comment' comment.id %}">
+                    <button class="delete-btn">Delete</button>
+                </a>
+            {% endif %}
+        </div>
+    {% empty %}
+        <div class="card">
+            No comments yet.
+        </div>
+    {% endfor %}
+
+</div>
+
+<script>
+function react(postId, value) {
+    fetch(`/community/react/${postId}/${value}/`)
+    .then(response => response.json())
+    .then(data => {
+        location.reload();
+    });
+}
+</script>
+
+{% endblock %}
