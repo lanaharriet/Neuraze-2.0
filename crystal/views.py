@@ -53,7 +53,7 @@ def crystal_home(request):
         simplified = simplify_text(user_text)
         points = extract_points(user_text)
 
-        # 🔥 Activity-Based Scoring
+        
         word_count = len(user_text.split())
 
         if word_count >= 50:

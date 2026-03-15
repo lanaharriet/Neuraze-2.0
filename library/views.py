@@ -12,19 +12,15 @@ from xhtml2pdf import pisa
 from dashboard.models import UserActivity
 
 
-# =========================================================
-# FILE TEXT EXTRACTION
-# =========================================================
+
 def extract_text_from_file(uploaded_file):
     filename = uploaded_file.name.lower()
     text_chunks = []
 
-    # 🔁 Reset file pointer (CRITICAL)
+    
     uploaded_file.seek(0)
 
-    # -------------------------
-    # PDF EXTRACTION
-    # -------------------------
+  
     if filename.endswith(".pdf"):
         with pdfplumber.open(uploaded_file) as pdf:
             for page in pdf.pages:
@@ -36,9 +32,6 @@ def extract_text_from_file(uploaded_file):
                 if page_text:
                     text_chunks.append(page_text)
 
-    # -------------------------
-    # DOCX EXTRACTION
-    # -------------------------
     elif filename.endswith(".docx"):
         doc = Document(uploaded_file)
         for para in doc.paragraphs:
@@ -48,9 +41,7 @@ def extract_text_from_file(uploaded_file):
     return "\n\n".join(text_chunks).strip()
 
 
-# =========================================================
-# MAIN VIEW
-# =========================================================
+
 @login_required
 def library_home(request):
     reading_text = ""
@@ -86,7 +77,7 @@ def library_home(request):
                     points=5
                 )
 
-        # 📄 Download PDF
+        
         if "download_pdf" in request.POST:
             template = get_template("library/library_pdf.html")
             html = template.render({"reading_text": reading_text})
