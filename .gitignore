@@ -10,7 +10,6 @@ _pycache_/
 
 # Django
 db.sqlite3
-/static/
 media/
 *.log
 
