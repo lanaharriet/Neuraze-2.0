@@ -1,6 +1,10 @@
+import os
 import google.generativeai as genai
+from dotenv import load_dotenv
 
-#GEMINI_API_KEY = "AIzaSyDwaF4JhBzrVg21vwzTrV-QKIRRD4-YQAA"
+load_dotenv()
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 genai.configure(api_key=GEMINI_API_KEY)
 

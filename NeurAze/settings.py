@@ -131,6 +131,7 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Login/Logout redirects
+LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'hub:hub'
 LOGOUT_REDIRECT_URL = 'accounts:login'
 
@@ -142,4 +143,4 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = "yourgmail@gmail.com"
 EMAIL_HOST_PASSWORD = "your-app-password"
 
-#GENERATIVE_AI_KEY = "AIzaSyDwaF4JhBzrVg21vwzTrV-QKIRRD4-YQAA"
+print("🔥 USING NEURAZE SETTINGS 🔥")
